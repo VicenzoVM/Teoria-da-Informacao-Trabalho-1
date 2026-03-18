@@ -29,14 +29,21 @@ class CLI:
         )
 
         subparsers = parser.add_subparsers(dest="command", help="Comandos disponíveis")
+        
         decode_parsers = subparsers.add_parser("decode", help= "Decodifica uma mensagem usando um código específico")
          
+        decode_subparsers = decode_parsers.add_subparsers(dest="decode_command", help="Comandos de decodificação")
 
-        # Exemplo de subcomando
-        subparsers.add_parser(
-            "Golomb",
-            help="",
-        )
+        golomb_parser = decode_subparsers.add_parser("golomb", help="Decodifica uma mensagem usando o código de Golomb") 
+
+        golomb_parser.add_argument("m", type=int, help="Parâmetro m para o código de Golomb")
+        
+        golomb_parser.add_argument("message", type=str, help="Mensagem codificada a ser decodificada")
+
+        
+
+        
+
 
         return parser
 
