@@ -29,11 +29,13 @@ class CLI:
         )
 
         subparsers = parser.add_subparsers(dest="command", help="Comandos disponíveis")
+        decode_parsers = subparsers.add_parser("decode", help= "Decodifica uma mensagem usando um código específico")
+         
 
         # Exemplo de subcomando
         subparsers.add_parser(
-            "hello",
-            help="Exibe uma mensagem de saudação",
+            "Golomb",
+            help="",
         )
 
         return parser
