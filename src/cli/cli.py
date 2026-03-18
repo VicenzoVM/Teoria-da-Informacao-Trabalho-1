@@ -19,7 +19,7 @@ class CLI:
         """
         parser = argparse.ArgumentParser(
             description="Programa de Teoria da Informação",
-            prog="teoria-info",
+            prog="cripto-da-galera",
         )
 
         parser.add_argument(
