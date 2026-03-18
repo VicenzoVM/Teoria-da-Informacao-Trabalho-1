@@ -1,1 +1,1 @@
-# TEORIA-DA-INFORMACAO-TRABALHO-PRATICO-1
+Teoria-da-Informacao-Trabalho-1
