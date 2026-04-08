@@ -97,22 +97,32 @@ def Elias_Gamma_decoder(message: str) -> str:
     return str(n)
 
 def Fibonnaci_Zeckendorf_decoder(message: str) -> int:
-    
-    fibonacci = [1, 2]
+    bits = message.strip()
+    if not bits or any(bit not in {"0", "1"} for bit in bits):
+        raise ValueError("message deve conter apenas bits '0' e '1'")
+    if len(bits) < 2 or not bits.endswith("1"):
+        raise ValueError("código Fibonacci/Zeckendorf inválido: stop-bit ausente")
 
-    while len(fibonacci) < len(message)-1:
+    payload = bits[:-1]
+    if not payload or "1" not in payload:
+        raise ValueError("código Fibonacci/Zeckendorf inválido: representação vazia ou malformada")
+    if "11" in payload:
+        raise ValueError(
+            "código Fibonacci/Zeckendorf inválido: representação não pode ter '11' antes do stop-bit"
+        )
+
+    fibonacci = [1, 2]
+    while len(fibonacci) < len(payload):
         fibonacci.append(fibonacci[-1] + fibonacci[-2])
-    
+
     fibonacci = fibonacci[::-1]
-    return_fibonacci = 0 
+    return_fibonacci = 0
 
     for i in range(len(fibonacci)):
-        if message[i] == "1":
+        if payload[i] == "1":
             return_fibonacci += fibonacci[i]
     return return_fibonacci
-            
 
-        
 def Huffman_decoder(message: str) -> str:
     """Decodifica uma mensagem gerada por ``Huffman_encoder``.
 

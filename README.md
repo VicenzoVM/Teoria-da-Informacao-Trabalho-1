@@ -65,6 +65,7 @@ cripto-da-galera --help
 ├── src/
 │   ├── cli/
 │   │   ├── __init__.py
+│   │   ├── main.py         # Entry point da CLI empacotada
 │   │   └── cli.py          # Definição de todos os subcomandos da CLI
 │   ├── encoders/
 │   │   ├── __init__.py
@@ -73,9 +74,9 @@ cripto-da-galera --help
 │       ├── __init__.py
 │       └── decoders.py     # Golomb, Elias-Gamma, Fibonacci, Huffman
 ├── tests/
-│   ├── __init__.py
-│   ├── encoder_test.py
-│   ├── decoder_test.py
+│   ├── conftest.py
+│   ├── test_algoritmos.py
+│   ├── test_carga.py
 │   └── test_cli.py
 ├── main.py
 ├── pyproject.toml
@@ -155,6 +156,8 @@ cripto-da-galera encode fibonacci <n>
 cripto-da-galera encode fibonacci 66
 # Saída: 1000101001
 ```
+
+Entradas inválidas como `0`, negativos ou valores não inteiros são rejeitadas.
 
 ---
 
@@ -251,6 +254,11 @@ cripto-da-galera decode fibonacci 1000101001
 # Saída: 66
 ```
 
+O decoder valida que a entrada:
+- contém apenas `0` e `1`
+- termina com stop-bit
+- não possui representação inválida antes do stop-bit
+
 ---
 
 #### Huffman
@@ -293,6 +301,7 @@ cripto-da-galera decode huffman     '<json>'
 
 # Outros
 cripto-da-galera hello
+cripto-da-galera legend
 cripto-da-galera --version
 cripto-da-galera --help
 ```
@@ -302,19 +311,19 @@ cripto-da-galera --help
 ## Executar testes
 
 ```bash
-# Teste do encoder Fibonacci
-python -m tests.encoder_test
+# Rodar toda a suíte
+pytest
 
-# Teste do decoder Fibonacci
-python -m tests.decoder_test
+# Rodar apenas os testes da CLI
+pytest tests/test_cli.py -v
 
-# Testes da CLI com pytest
-python -m pytest tests/test_cli.py -v
+# Rodar apenas os testes dos algoritmos
+pytest tests/test_algoritmos.py -v
 ```
 
-Para rodar todos os testes com cobertura:
+Para rodar com cobertura, instale o plugin opcional `pytest-cov` e execute:
 
 ```bash
-pip install pytest pytest-cov
+pip install pytest-cov
 pytest --cov=src
 ```

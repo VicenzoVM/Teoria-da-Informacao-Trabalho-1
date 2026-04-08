@@ -3,14 +3,14 @@
 import argparse
 from typing import Optional
 
-from encoders.encoders import (
+from src.encoders.encoders import (
     Golomb_encoder,
     Elias_Gamma_encoder,
     Fibonnaci_Zeckendorf_encoder,
     Huffman_encoder,
     bit_flip,
 )
-from decoders.decoders import (
+from src.decoders.decoders import (
     Golomb_decoder,
     Elias_Gamma_decoder,
     Fibonnaci_Zeckendorf_decoder,

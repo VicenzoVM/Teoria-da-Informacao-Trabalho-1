@@ -71,22 +71,26 @@ def Elias_Gamma_encoder(message: str) -> str:
     return prefix + binary
 
 def Fibonnaci_Zeckendorf_encoder(message: int) -> str:
-    
+    if not isinstance(message, int):
+        raise ValueError("Fibonacci/Zeckendorf exige um inteiro positivo")
+    if message <= 0:
+        raise ValueError("Fibonacci/Zeckendorf é definido apenas para inteiros positivos")
+
     fibonacci = [1, 2]
-    while fibonacci[-1] + fibonacci [-2] <= message:
+    while fibonacci[-1] + fibonacci[-2] <= message:
         fibonacci.append(fibonacci[-1] + fibonacci[-2])
 
     encoder_return: list = []
     for v in fibonacci[::-1]:
         if v <= message:
-            encoder_return.append ("1")
-            message = message - v 
-        else: 
+            encoder_return.append("1")
+            message = message - v
+        else:
             encoder_return.append("0")
-    # stopbit 
+    # Stop-bit para delimitar o fim da palavra-código.
     encoder_return.append("1")
-    return "".join(encoder_return)  
-    
+    return "".join(encoder_return)
+
 
 def _build_huffman_codes(message: str) -> Dict[str, str]:
     """Gera o dicionário de códigos de Huffman para a mensagem."""
@@ -173,4 +177,3 @@ def bit_flip(message: str, probability: float, seed: Optional[int] = None) -> st
             flipped.append(bit)
 
     return "".join(flipped)
-

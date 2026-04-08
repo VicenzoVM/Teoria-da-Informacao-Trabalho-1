@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 
 [project.scripts]
-cripto-da-galera = "cli.main:main"
+cripto-da-galera = "src.cli.main:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -30,4 +30,4 @@ disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--verbose --cov=src"
+addopts = "--verbose"

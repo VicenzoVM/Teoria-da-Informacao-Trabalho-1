@@ -1,19 +1,18 @@
-import pytest
 import random
 import string
-import json
-from encoders.encoders import (
-    Golomb_encoder, 
-    Elias_Gamma_encoder, 
-    Fibonnaci_Zeckendorf_encoder, 
-    Huffman_encoder, 
-    bit_flip
+
+from src.decoders.decoders import (
+    Elias_Gamma_decoder,
+    Fibonnaci_Zeckendorf_decoder,
+    Golomb_decoder,
+    Huffman_decoder,
 )
-from decoders.decoders import (
-    Golomb_decoder, 
-    Elias_Gamma_decoder, 
-    Fibonnaci_Zeckendorf_decoder, 
-    Huffman_decoder
+from src.encoders.encoders import (
+    Elias_Gamma_encoder,
+    Fibonnaci_Zeckendorf_encoder,
+    Golomb_encoder,
+    Huffman_encoder,
+    bit_flip
 )
 
 # ==========================================

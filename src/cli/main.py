@@ -2,7 +2,7 @@
 
 import sys
 
-from cli import CLI
+from . import CLI
 
 
 def main() -> int:

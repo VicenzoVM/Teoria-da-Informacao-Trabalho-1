@@ -1,7 +1,20 @@
-import pytest
 import json
-from encoders.encoders import Golomb_encoder, Elias_Gamma_encoder, Huffman_encoder, bit_flip
-from decoders.decoders import Golomb_decoder, Elias_Gamma_decoder, Huffman_decoder
+
+import pytest
+
+from src.decoders.decoders import (
+    Elias_Gamma_decoder,
+    Fibonnaci_Zeckendorf_decoder,
+    Golomb_decoder,
+    Huffman_decoder,
+)
+from src.encoders.encoders import (
+    Elias_Gamma_encoder,
+    Fibonnaci_Zeckendorf_encoder,
+    Golomb_encoder,
+    Huffman_encoder,
+    bit_flip,
+)
 
 # ==========================================
 # TESTES GOLOMB
@@ -37,6 +50,27 @@ def test_elias_gamma_decode_invalido():
     """Testa a validação de entrada corrompida no decoder."""
     with pytest.raises(ValueError):
         Elias_Gamma_decoder("00010") # Incompleto
+
+
+# ==========================================
+# TESTES FIBONACCI / ZECKENDORF
+# ==========================================
+def test_fibonacci_encode_decode():
+    """Testa se a codificação e decodificação preservam o valor."""
+    assert Fibonnaci_Zeckendorf_decoder(Fibonnaci_Zeckendorf_encoder(1)) == 1
+    assert Fibonnaci_Zeckendorf_decoder(Fibonnaci_Zeckendorf_encoder(66)) == 66
+
+
+def test_fibonacci_rejeita_zero():
+    """Valida que Fibonacci/Zeckendorf aceita apenas inteiros positivos."""
+    with pytest.raises(ValueError, match="inteiros positivos"):
+        Fibonnaci_Zeckendorf_encoder(0)
+
+
+def test_fibonacci_decode_invalido():
+    """Valida entradas inválidas no decoder de Fibonacci/Zeckendorf."""
+    with pytest.raises(ValueError):
+        Fibonnaci_Zeckendorf_decoder("1010")
 
 # ==========================================
 # TESTES HUFFMAN
