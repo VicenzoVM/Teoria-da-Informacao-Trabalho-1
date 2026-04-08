@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/cli/__init__.py
+src/cli/cli.py
+src/cli/cli_old.py
+src/cli/main.py
+src/decoders/decoders.py
+src/encoders/encoders.py
+src/teoria_informacao.egg-info/PKG-INFO
+src/teoria_informacao.egg-info/SOURCES.txt
+src/teoria_informacao.egg-info/dependency_links.txt
+src/teoria_informacao.egg-info/entry_points.txt
+src/teoria_informacao.egg-info/top_level.txt
+tests/test_cli.py
