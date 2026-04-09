@@ -316,6 +316,14 @@ cripto-da-galera --help
 
 ## Executar testes
 
+Antes de rodar os testes, instale as dependências de desenvolvimento:
+
+```bash
+pip install -r requirements.txt
+```
+
+Isso instala o `pytest` e as demais ferramentas de desenvolvimento do projeto.
+
 ```bash
 # Rodar toda a suíte
 pytest
