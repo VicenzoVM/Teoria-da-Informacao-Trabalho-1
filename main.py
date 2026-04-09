@@ -2,7 +2,8 @@
 """Ponto de entrada do programa CLI de Teoria da Informação."""
 
 import sys
-from src.cli import CLI
+
+from cli import CLI
 
 
 def main() -> int:

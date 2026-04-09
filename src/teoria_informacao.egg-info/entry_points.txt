@@ -1,2 +1,2 @@
 [console_scripts]
-cripto-da-galera = cli.main:main
+cripto-da-galera = src.cli.main:main

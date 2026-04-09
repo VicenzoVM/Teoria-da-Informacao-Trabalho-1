@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.cli import CLI
+from cli import CLI
 
 
 def test_cli_instantiation() -> None:

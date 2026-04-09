@@ -56,6 +56,12 @@ Após instalar, o comando `cripto-da-galera` fica disponível globalmente no amb
 cripto-da-galera --help
 ```
 
+Se a instalação editável falhar ao tentar baixar dependências de build em um ambiente sem acesso à internet, tente:
+
+```bash
+pip install -e . --no-build-isolation
+```
+
 ---
 
 ## Estrutura do projeto

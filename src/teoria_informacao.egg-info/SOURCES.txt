@@ -2,13 +2,16 @@ README.md
 pyproject.toml
 src/cli/__init__.py
 src/cli/cli.py
-src/cli/cli_old.py
 src/cli/main.py
+src/decoders/__init__.py
 src/decoders/decoders.py
+src/encoders/__init__.py
 src/encoders/encoders.py
 src/teoria_informacao.egg-info/PKG-INFO
 src/teoria_informacao.egg-info/SOURCES.txt
 src/teoria_informacao.egg-info/dependency_links.txt
 src/teoria_informacao.egg-info/entry_points.txt
 src/teoria_informacao.egg-info/top_level.txt
+tests/test_algoritmos.py
+tests/test_carga.py
 tests/test_cli.py

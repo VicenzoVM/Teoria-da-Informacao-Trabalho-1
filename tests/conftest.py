@@ -1,14 +1,15 @@
 """Configuração dos testes.
 
-Garante que a raiz do projeto esteja disponível no ``sys.path`` para que os
-imports de ``src.*`` funcionem de forma consistente ao rodar ``pytest``.
+Garante que o diretório ``src`` esteja disponível no ``sys.path`` para que os
+pacotes instaláveis do projeto funcionem de forma consistente ao rodar
+``pytest`` sem depender de instalação prévia.
 """
 
 from pathlib import Path
 import sys
 
 
-ROOT = Path(__file__).resolve().parents[1]
-root_str = str(ROOT)
-if root_str not in sys.path:
-    sys.path.insert(0, root_str)
+SRC = Path(__file__).resolve().parents[1] / "src"
+src_str = str(SRC)
+if src_str not in sys.path:
+    sys.path.insert(0, src_str)

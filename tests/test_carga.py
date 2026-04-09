@@ -1,13 +1,13 @@
 import random
 import string
 
-from src.decoders.decoders import (
+from decoders.decoders import (
     Elias_Gamma_decoder,
     Fibonnaci_Zeckendorf_decoder,
     Golomb_decoder,
     Huffman_decoder,
 )
-from src.encoders.encoders import (
+from encoders.encoders import (
     Elias_Gamma_encoder,
     Fibonnaci_Zeckendorf_encoder,
     Golomb_encoder,
