@@ -245,20 +245,20 @@ class Tab1(ttk.Frame):
                 lines.append(f"Método: Golomb  (M={m})")
                 nums = self._stream_golomb_decode(raw.replace(" ", ""), m)
                 for n in nums:
-                    lines.append(f"  {n}  (ASCII: {chr(n) if 32 <= n < 127 else '—'})")
+                    lines.append(f"  {n}  (ASCII: {chr(n) if 32 <= n <= 0x10FFFF and chr(n).isprintable() else '—'})")
 
             elif method == "elias_gamma":
                 lines.append("Método: Elias-Gamma")
                 nums = self._stream_elias_decode(raw.replace(" ", ""))
                 for n in nums:
-                    lines.append(f"  {n}  (ASCII: {chr(n) if 32 <= n < 127 else '—'})")
+                    lines.append(f"  {n}  (ASCII: {chr(n) if 32 <= n <= 0x10FFFF and chr(n).isprintable() else '—'})")
 
             elif method == "fibonacci":
                 lines.append("Método: Fibonacci / Zeckendorf")
                 parts = raw.split() if " " in raw else self._split_fib_codewords(raw)
                 for part in parts:
                     n = fibonacci.decode(part)
-                    lines.append(f"  {part}  →  {n}  (ASCII: {chr(n) if 32 <= n < 127 else '—'})")
+                    lines.append(f"  {part}  →  {n}  (ASCII: {chr(n) if 32 <= n <= 0x10FFFF and chr(n).isprintable() else '—'})")
 
             elif method == "huffman":
                 lines.append("Método: Huffman")
@@ -682,7 +682,7 @@ class Tab3(ttk.Frame):
         sec_cli.grid(row=1, column=0, sticky="ew", padx=8, pady=4)
         sec_cli.columnconfigure(1, weight=1)
 
-        ttk.Label(sec_cli, text="Mensagem (bits):").grid(row=0, column=0, sticky="w")
+        ttk.Label(sec_cli, text="Codeword (bits):").grid(row=0, column=0, sticky="w")
         self.entry_msg = ttk.Entry(sec_cli, font=("Courier New", 12))
         self.entry_msg.grid(row=0, column=1, sticky="ew", padx=(6, 0))
 
@@ -784,9 +784,18 @@ class Tab3(ttk.Frame):
         if algorithm == "huffman":
             json_src = self.shared_state.get("last_huffman_json", "").strip()
             if not json_src:
-                raise ValueError("Codifique a mensagem em Huffman na aba TP1 antes de usar Huffman no socket.")
+                raise ValueError(
+                    "Codifique a mensagem em Huffman na aba TP1 antes de usar Huffman no socket."
+                )
             import json as _json
             payload = _json.loads(json_src)
+            expected_len = len(payload["data"])
+            if len(bits) != expected_len:
+                raise ValueError(
+                    f"Bits Huffman incompatíveis: recebidos {len(bits)} bit(s), "
+                    f"esperados {expected_len}. "
+                    "Hamming (7,4) limita a 4 bits por pacote — use CRC ou Repetição para mensagens Huffman."
+                )
             payload["data"] = bits
             return huffman.decode(_json.dumps(payload))
         if algorithm == "elias_gamma":
@@ -798,7 +807,7 @@ class Tab3(ttk.Frame):
             nums = self._stream_golomb(bits, m)
         else:
             return bits
-        chars = "".join(chr(n) if 32 <= n <= 126 else f"[{n}]" for n in nums)
+        chars = "".join(chr(n) if 32 <= n <= 0x10FFFF and chr(n).isprintable() else f"[{n}]" for n in nums)
         return f"{chars}  {nums}"
 
     def _stream_elias(self, bits: str) -> list:
@@ -953,15 +962,15 @@ class Tab3(ttk.Frame):
         method = self.method_var.get()
 
         try:
-            # Codifica com o método selecionado
+            # O codeword já vem codificado do Tab2 — apenas valida e repassa ao servidor
             if method == "hamming":
-                if len(bits) != 4:
-                    raise ValueError("Hamming (7,4) exige exatamente 4 bits de dados")
-                codeword = hamming.encode(bits)
+                if len(bits) != 7:
+                    raise ValueError("Hamming (7,4): o codeword deve ter exatamente 7 bits")
                 server_method = "hamming"
 
             elif method == "crc":
-                codeword = crc.encode(bits)
+                if len(bits) <= 4:
+                    raise ValueError("CRC-4: o codeword deve ter mais de 4 bits (dados + 4 bits de CRC)")
                 server_method = "crc"
 
             elif method == "repetition":
@@ -971,12 +980,16 @@ class Tab3(ttk.Frame):
                         raise ValueError
                 except ValueError:
                     raise ValueError("R deve ser um inteiro ímpar positivo")
-                codeword = repetition.encode(bits, r)
+                if len(bits) % r != 0:
+                    raise ValueError(
+                        f"Repetição R={r}: o codeword ({len(bits)} bits) deve ser múltiplo de R"
+                    )
                 server_method = f"repetition_{r}"
 
-            self._log(f"[Cliente] Dados originais : {bits}")
+            codeword = bits
+
+            self._log(f"[Cliente] Codeword        : {bits}")
             self._log(f"[Cliente] Método          : {method}")
-            self._log(f"[Cliente] Codeword enviado: {codeword}")
 
             # Insere erro se solicitado
             if self.var_insert_err.get():
